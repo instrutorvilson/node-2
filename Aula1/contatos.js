@@ -1,6 +1,12 @@
+const pool = require('./conexao')
 module.exports = {
    listar(req, res) {
-      res.status(200).send("lista de contatos")
+      pool.connect((err, client)=>{
+         if(err){
+            return res.send(`Erro de conexão: ${err.message}`)
+         }
+         res.status(200).send("lista de contatos")
+      })      
    },
 
    listarPorId(req, res) {
