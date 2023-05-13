@@ -10,3 +10,11 @@ values('Jose','jose@gmail.com','(47)9087-0987');
 
 insert into tb_contatos(nome, email, celular)
 values('Maria','maria@gmail.com','(47)9087-0945');
+
+create table tb_usuarios(
+  id serial primary key,
+  nome varchar(50),
+  email varchar(100),
+  senha varchar(300),
+  perfil varchar(10)
+);
