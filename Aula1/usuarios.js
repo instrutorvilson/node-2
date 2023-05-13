@@ -1,5 +1,6 @@
 const pool = require("./conexao")
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 module.exports = {
     async registrar(req, res) {
@@ -34,7 +35,15 @@ module.exports = {
               let senhaOk = await bcrypt.compare(req.body.senha, result.rows[0].senha)
               if(senhaOk){
                 //gerar o token
-                return res.status(200).send({ token: "token"})
+                let token = jwt.sign(
+                    {
+                      id: result.rows[0].id,
+                      nome: result.rows[0].nome, 
+                      email: result.rows[0].email,
+                      perfil: result.rows[0].perfil
+                    }
+                  ,process.env.JWT_SECRET)
+                return res.status(200).send({ token: token})
               }
               return res.status(401).send({ Message: "Usuario/senha não coincidem."})
             }
