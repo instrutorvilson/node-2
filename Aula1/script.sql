@@ -18,3 +18,15 @@ create table tb_usuarios(
   senha varchar(300),
   perfil varchar(10)
 );
+
+create table tb_compromissos(
+  id serial primary key,
+  descricao varchar(100),
+  local varchar(100),
+  idcontato int,
+  data Date,
+  hora Time
+);
+
+insert into tb_compromissos(descricao,local, idcontato, data, hora)
+values('Chá','Casa do Zé',1,'2023-05-13','10:30:00');
