@@ -1,16 +1,52 @@
+const pool = require("./conexao")
+const bcrypt = require('bcrypt')
+
 module.exports = {
-    registrar(req, res){
-        const { nome, email} = req.body
-        let contato = {
-            nome,
-            email: email,
-            senha: req.body.senha
+    async registrar(req, res) {
+        let client = ''
+        try {
+            client = await pool.connect()
+            /**Cria o hash da senha em texto plano */
+            let hash = await bcrypt.hash(req.body.senha, 10)
+
+            let sql = 'insert into tb_usuarios(nome, email, senha, perfil) values($1,$2,$3,$4)'
+            let dados = [req.body.nome, req.body.email, hash, req.body.perfil]
+
+            await client.query(sql, dados)
+            res.status(201).send({ message: "Usuário cadastrado com sucesso" })
         }
-        res.status(201).send(contato)
+        catch (err) {
+            res.status(400).send({ erro: err.message })
+        }
+        finally {
+            if (client != '')
+                client.release()
+        }
     },
 
-    login(req, res){
-        const { email} = req.body
-        res.status(200).send(`${email} logado`)
+    async login(req, res) {
+        let client = ''
+        try {
+            client = await pool.connect()
+            let sql = 'select * from tb_usuarios where email = $1'            
+            result = await client.query(sql,[req.body.email])
+            if(result.rowCount > 0){
+              let senhaOk = await bcrypt.compare(req.body.senha, result.rows[0].senha)
+              if(senhaOk){
+                //gerar o token
+                return res.status(200).send({ token: "token"})
+              }
+              return res.status(401).send({ Message: "Usuario/senha não coincidem."})
+            }
+
+            res.status(400).send({ message: "Usuário não cadastrado." })
+        }
+        catch (err) {
+            res.status(400).send({ erro: err.message })
+        }
+        finally {
+            if (client != '')
+                client.release()
+        }
     }
 }
