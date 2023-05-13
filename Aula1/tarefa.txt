@@ -1,0 +1,15 @@
+Criar um endpoint para cadastrar compromissos
+
+tb_compromissos
+id
+descricao
+local
+data
+hora
+idcontato
+status
+
+endpoint
+\compromisso (GET,POST)
+\compromisso\:idcompromisso (GET, PUT, DELETE)
+\compromisso\:idcompromisso\status\??
