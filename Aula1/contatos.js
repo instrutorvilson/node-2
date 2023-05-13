@@ -62,36 +62,53 @@ module.exports = {
       }
       catch (err) {
          res.status(400).send({ Erro: err.message })
-      }     
+      }
    },
    async alterar(req, res) {
-      try{
-        let client = await pool.connect()
-        let result = await client.query(`select * from tb_contatos where id = ${req.params.idcontato}`)
-        if(result.rowCount > 0){
-           if(result.rows[0].email !== req.body.email){
-              result = await client.query(
-                'select * from tb_contatos where email = $1',
-                [req.body.email]
+      let client = ''
+      try {  
+         client = await pool.connect()       
+         let result = await client.query(`select * from tb_contatos where id = ${req.params.idcontato}`)
+         if (result.rowCount > 0) {
+            if (result.rows[0].email !== req.body.email) {
+               result = await client.query(
+                  'select * from tb_contatos where email = $1',
+                  [req.body.email]
                )
-              if (result.rowCount > 0)
-            return res.status(400).send({ message: "Já existe um contato com esse email" })
-           }
-           let sql = "update tb_Contatos set nome = $1, email= $2, celular=$3 where id = $4"
-           let dados = [req.body.nome, req.body.email, req.body.celular, req.params.idcontato]
-           await client.query(sql, dados)
-           res.status(200).send({message:"Contato alterado com sucesso", contato: req.body})
-        }
-        else{
-           return res.status(400).send({message: "O contato não existe"})
-        }
+               if (result.rowCount > 0)
+                  return res.status(400).send({ message: "Já existe um contato com esse email" })
+            }
+            let sql = "update tb_Contatos set nome = $1, email= $2, celular=$3 where id = $4"
+            let dados = [req.body.nome, req.body.email, req.body.celular, req.params.idcontato]
+            await client.query(sql, dados)
+            res.status(200).send({ message: "Contato alterado com sucesso", contato: req.body })
+         }
+         else {
+            return res.status(400).send({ message: "O contato não existe" })
+         }
       }
-      catch(err){
+      catch (err) {
          res.status(400).send({ Erro: err.message })
-      }      
+      }
+      finally{
+         if(client != '')
+           client.release()
+      }
    },
 
-   excluir(req, res) {
-      res.status(201).send(`Excluido: ${req.params.idcontato}`)
+   async excluir(req, res) {
+      let client = ''
+      try {
+         client = await pool.connect()
+         client.query('delete from tb_contatos where id = $1',[req.params.idcontato])
+         res.status(204).send()
+      }
+      catch (err) {
+         res.status(400).send({ Erro: err.message })
+      }
+      finally{
+         if(client != '')
+           client.release()
+      }
    }
 }
