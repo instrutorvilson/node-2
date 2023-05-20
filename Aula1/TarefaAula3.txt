@@ -1,0 +1,8 @@
+Middleware
+Autorização
+Deploy da API
+
+-> Criar um endpoint para listar somente os contatos cadastrados por um usuario.
+
+-> No endpoint de consultar contatos, se o usuario logado for ADMIN, listar todos, senão listar somente os contatos do usuario logado
+

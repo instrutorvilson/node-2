@@ -10,6 +10,7 @@ const compromisso = require('./compromissos')
 /**Conjunto de rotas para contato */
 router.get('/contato', mdLogin, contato.listar)   
 router.get('/contato/:idcontato',contato.listarPorId)
+router.get('/contato/user/:iduser',contato.listarPorUser)
 router.post('/contato', mdAdm, contato.inserir)
 router.put('/contato/:idcontato',contato.alterar)
 router.delete('/contato/:idcontato',contato.excluir)

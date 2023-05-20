@@ -34,6 +34,18 @@ module.exports = {
       })
    },
 
+   async listarPorUser(req, res){
+      try{
+         const client = await pool.connect()
+         const result = await client.query('select * from tb_contatos where iduser = $1',[req.params.iduser])
+         
+         return res.status(200).send(result.rows)
+      }
+      catch(error){
+         res.status(404).send({ erro: error.message}) 
+      }
+   },
+
    async inserir(req, res) {
       /* pool.connect((err, client)=>{
          if(err){
