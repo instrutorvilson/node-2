@@ -11,6 +11,8 @@ values('Jose','jose@gmail.com','(47)9087-0987');
 insert into tb_contatos(nome, email, celular)
 values('Maria','maria@gmail.com','(47)9087-0945');
 
+alter table tb_contatos add column idcontato INTEGER DEFAULT 1; 
+
 create table tb_usuarios(
   id serial primary key,
   nome varchar(50),
@@ -30,3 +32,4 @@ create table tb_compromissos(
 
 insert into tb_compromissos(descricao,local, idcontato, data, hora)
 values('Chá','Casa do Zé',1,'2023-05-13','10:30:00');
+

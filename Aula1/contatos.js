@@ -1,4 +1,5 @@
 const pool = require('./conexao')
+const userLogado = require('./libs/userlogado')
 module.exports = {
    listar(req, res) {    
 
@@ -49,14 +50,17 @@ module.exports = {
          })
          })   
          */
-      try {
+      try {      
          let client = await pool.connect();
          let result = await client.query('select * from tb_contatos where email = $1', [req.body.email])
          if (result.rowCount > 0)
             return res.status(400).send({ message: "Já existe um contato com esse email" })
 
-         let sql = "insert into tb_contatos(nome, email, celular) values($1,$2,$3)"
-         let dados = [req.body.nome, req.body.email, req.body.celular]
+         let sql = "insert into tb_contatos(nome, email, celular,idcontato) values($1,$2,$3,$4)"
+         //recupera o usuario logado
+         const user = userLogado.user(req)
+         let dados = [req.body.nome, req.body.email, req.body.celular, user.id]
+
          result = await client.query(sql, dados)
          client.release()
          res.status(201).send({ message: "Contato inserido com sucesso" })
