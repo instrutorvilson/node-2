@@ -3,7 +3,6 @@ const app = express()
 const rotas = require('./rotas')
 
 app.use(express.json())
-
 app.use(rotas)
 
 const port = process.env.PORT

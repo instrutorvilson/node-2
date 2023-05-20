@@ -1,6 +1,7 @@
 const pool = require('./conexao')
 module.exports = {
-   listar(req, res) {
+   listar(req, res) {    
+
       pool.connect((err, client) => {
          if (err) {
             return res.send(`Erro de conexão: ${err.message}`)
