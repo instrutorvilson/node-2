@@ -1,12 +1,13 @@
 const express = require('express')
 const router = express.Router()
+const mdLogin = require('./middlware-login')
 
 const contato = require('./contatos')
 const usuario = require('./usuarios')
 const compromisso = require('./compromissos')
 
 /**Conjunto de rotas para contato */
-router.get('/contato', contato.listar)   
+router.get('/contato', mdLogin, contato.listar)   
 router.get('/contato/:idcontato',contato.listarPorId)
 router.post('/contato', contato.inserir)
 router.put('/contato/:idcontato',contato.alterar)
