@@ -1,4 +1,5 @@
 const { Sequelize, DataTypes } = require('sequelize')
+const { Categoria } = require('./model/categoria')
 const sequelize = new Sequelize('postgres://postgres:admin@localhost:5432/dbvendas')
 
 async function criarProduto(){
@@ -41,9 +42,13 @@ async function conectar(){
   }
 }
 
+async function criarCategoria(){
+    Categoria.sync()
+}
+
 //conectar()
 criarProduto()
-
+//criarCategoria()
 /**
  * npm init -y
  * npm install sequelize pg
