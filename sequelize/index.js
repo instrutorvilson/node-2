@@ -6,7 +6,10 @@ async function criarProduto(){
    {
      descricao:{
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate:{
+        len:[5, 8 ]
+      }
      },
      preco:{
       type: DataTypes.DOUBLE
@@ -20,11 +23,11 @@ async function criarProduto(){
      }
    })
    //solicitar para que seja criado a tabela
-   //await Produto.sync({force: true}) //recria a tabela
+   await Produto.sync({force: true}) //recria a tabela
    //await Produto.sync()
    //console.log('Tabela tb_produtos criada com sucesso')
 
-   const produto = await Produto.create({ descricao: 'soja', preco: 10.50, estoque: 15})
+   const produto = await Produto.create({ descricao: 'banana', preco: 10.50, estoque: 15})
    console.log(produto)   
 }
 
