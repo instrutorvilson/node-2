@@ -8,14 +8,12 @@ Categoria.init({
         type: DataTypes.STRING,
         len:[2,20]
     },
-    status:{
+    ativa: {
         type: DataTypes.BOOLEAN,
-        defaultValue: true
-    }
-}
+    },}
 ,{
     sequelize,
-    tableName: "tb_categorias"
+    tableName: "Categoria"
 })
 
 module.exports= { Categoria }

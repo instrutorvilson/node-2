@@ -1,7 +1,7 @@
 const { Sequelize, DataTypes } = require('sequelize')
 const sequelize = new Sequelize('postgres://postgres:admin@localhost:5432/dbvendas')
 
-const Produto = sequelize.define('tb_produtos',
+const Produto = sequelize.define('Produtos',
    {
      descricao:{
       type: DataTypes.STRING,
@@ -19,6 +19,9 @@ const Produto = sequelize.define('tb_produtos',
      status:{
        type: DataTypes.BOOLEAN,
        defaultValue: true
+     },
+     id_categoria:{
+        type: DataTypes.INTEGER
      }
    })
 

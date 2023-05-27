@@ -1,4 +1,5 @@
 const express = require('express')
+const { Categoria } = require('./model/categoria')
 const { Produto } = require('./model/modelProduto')
 const app = express()
 const router = express.Router()
@@ -15,6 +16,11 @@ router.get('/produto',async(req, res)=>{
 
 router.post('/produto', async(req, res)=>{
     try{
+        const idcategoria = req.body.id_categoria
+        const categoria = await Categoria.findAll({where:{ id: idcategoria}})
+        if(!categoria.length)
+           return res.status(400).send('Categoria informada não existe')
+        
         const produto = await Produto.create(req.body)
         res.status(201).send(produto)
     }
