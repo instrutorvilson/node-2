@@ -1,9 +1,36 @@
-const { Sequelize } = require('sequelize')
+const { Sequelize, DataTypes } = require('sequelize')
 const sequelize = new Sequelize('postgres://postgres:admin@localhost:5432/dbvendas')
+
+async function criarProduto(){
+   const Produto = sequelize.define('tb_produtos',
+   {
+     descricao:{
+      type: DataTypes.STRING,
+      allowNull: false
+     },
+     preco:{
+      type: DataTypes.DOUBLE
+     },
+     estoque:{
+      type: DataTypes.INTEGER
+     },
+     status:{
+       type: DataTypes.BOOLEAN,
+       defaultValue: true
+     }
+   })
+   //solicitar para que seja criado a tabela
+   //await Produto.sync({force: true}) //recria a tabela
+   //await Produto.sync()
+   //console.log('Tabela tb_produtos criada com sucesso')
+
+   const produto = await Produto.create({ descricao: 'soja', preco: 10.50, estoque: 15})
+   console.log(produto)   
+}
 
 async function conectar(){
   try{
-    await sequelize.authenticate()
+    await sequelize.authenticate()    
     console.log('conectado')
   }
   catch(error){
@@ -11,7 +38,8 @@ async function conectar(){
   }
 }
 
-conectar()
+//conectar()
+criarProduto()
 
 /**
  * npm init -y
