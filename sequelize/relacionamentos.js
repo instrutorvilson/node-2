@@ -21,17 +21,27 @@ async function criarRelacionamento() {
     class Produto extends Model { }
 
     Produto.init({
-        descricao: {
+        descricao:{
             type: DataTypes.STRING,
             allowNull: false,
-        },
-        preco: {
-            type: DataTypes.DECIMAL,
-        }
+            validate:{
+              len:[5, 8 ]
+            }
+           },
+           preco:{
+            type: DataTypes.DOUBLE
+           },
+           estoque:{
+            type: DataTypes.INTEGER
+           },
+           status:{
+             type: DataTypes.BOOLEAN,
+             defaultValue: true
+           }
     },
         { sequelize }
     );
-    
+
     Produto.belongsTo(Categoria,{
         foreignKey: 'id_categoria'
     })
